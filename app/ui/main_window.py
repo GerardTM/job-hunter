@@ -5,8 +5,10 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from app.config.app_settings import AppSettings
 from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
+from app.system.paths import AppPaths
 from app.ui.components.sidebar import Sidebar
 from app.ui.pages.dashboard_page import DashboardPage
 from app.ui.pages.jobs_page import JobsPage
@@ -29,7 +31,13 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Job Hunter")
         self.resize(1100, 700)
 
-        self.theme_manager = ThemeManager()
+        self.app_settings = AppSettings(
+            AppPaths.settings_path()
+        )
+
+        self.theme_manager = ThemeManager(
+            self.app_settings
+        )
 
         self._setup_ui()
 

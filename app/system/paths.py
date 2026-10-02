@@ -44,3 +44,7 @@ class AppPaths:
     @classmethod
     def search_config_path(cls) -> Path:
         return cls.data_dir() / "search.json"
+
+    @classmethod
+    def settings_path(cls) -> Path:
+        return cls.data_dir() / "settings.json"

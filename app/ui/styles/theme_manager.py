@@ -1,5 +1,6 @@
 from PySide6.QtCore import QObject, Signal
 
+from app.config.app_settings import AppSettings
 from app.ui.styles.colors import set_theme
 from app.ui.styles.theme import get_dark_theme, get_light_theme
 
@@ -7,10 +8,14 @@ from app.ui.styles.theme import get_dark_theme, get_light_theme
 class ThemeManager(QObject):
     theme_changed = Signal(bool)
 
-    def __init__(self):
+    def __init__(self, settings: AppSettings):
         super().__init__()
 
-        self._dark = False
+        self.settings = settings
+
+        self._dark = settings.load_dark_mode()
+
+        set_theme(self._dark)
 
     @property
     def is_dark(self) -> bool:
@@ -24,7 +29,9 @@ class ThemeManager(QObject):
             return
 
         self._dark = dark
+
         set_theme(dark)
+        self.settings.save_dark_mode(dark)
 
         self.theme_changed.emit(dark)
 
