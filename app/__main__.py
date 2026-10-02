@@ -19,10 +19,12 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 async def main():
     application_service = create_application()
 
-    window = MainWindow()
-    window.show()
-
     application_service.start()
+
+    await asyncio.sleep(0)
+
+    window = MainWindow(application_service)
+    window.show()
 
     print("🚀 Job Hunter started")
 
