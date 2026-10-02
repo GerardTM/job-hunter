@@ -1,31 +1,43 @@
 import asyncio
 
+from PySide6.QtCore import QObject, Signal
+
 from app.services.collection_runner import CollectionRunner
 from app.services.job_hunter_service import JobHunterService
 from app.services.scheduler_service import SchedulerService
 
 
-class ApplicationService:
+class ApplicationService(QObject):
+
+    collection_completed = Signal()
 
     def __init__(
         self,
         collection_runner: CollectionRunner,
         interval_seconds: float = 900,
     ):
+        super().__init__()
+
         self.collection_runner = collection_runner
+
         self.scheduler = SchedulerService(
-            task=self.collection_runner.run,
+            task=self._run_collection,
             interval_seconds=interval_seconds,
         )
+
         self._scheduler_task: asyncio.Task[None] | None = None
+
+    @property
+    def is_running(self) -> bool:
+        return self.scheduler.is_running
 
     @property
     def job_hunter_service(self) -> JobHunterService:
         return self.collection_runner.job_hunter_service
 
-    @property
-    def is_running(self) -> bool:
-        return self.scheduler.is_running
+    async def _run_collection(self) -> None:
+        await self.collection_runner.run()
+        self.collection_completed.emit()
 
     def start(self) -> None:
         if self._scheduler_task is not None:
