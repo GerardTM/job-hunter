@@ -23,7 +23,10 @@ async def main():
 
     await asyncio.sleep(0)
 
-    window = MainWindow(application_service)
+    window = MainWindow(
+        application_service,
+        application_service.job_hunter_service,
+    )
     window.show()
 
     print("🚀 Job Hunter started")

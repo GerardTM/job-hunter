@@ -1,6 +1,7 @@
 import asyncio
 
 from app.services.collection_runner import CollectionRunner
+from app.services.job_hunter_service import JobHunterService
 from app.services.scheduler_service import SchedulerService
 
 
@@ -17,6 +18,10 @@ class ApplicationService:
             interval_seconds=interval_seconds,
         )
         self._scheduler_task: asyncio.Task[None] | None = None
+
+    @property
+    def job_hunter_service(self) -> JobHunterService:
+        return self.collection_runner.job_hunter_service
 
     @property
     def is_running(self) -> bool:
