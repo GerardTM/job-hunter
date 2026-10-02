@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.models.job_offer import JobOffer
+from app.ui.styles.colors import Colors
 
 
 class JobOfferCard(QFrame):
@@ -20,6 +21,10 @@ class JobOfferCard(QFrame):
 
         self.setObjectName("jobOfferCard")
 
+        self._setup_ui()
+        self._apply_styles()
+
+    def _setup_ui(self) -> None:
         layout = QHBoxLayout(self)
         layout.setContentsMargins(20, 16, 20, 16)
         layout.setSpacing(20)
@@ -27,15 +32,15 @@ class JobOfferCard(QFrame):
         content_layout = QVBoxLayout()
         content_layout.setSpacing(5)
 
-        title = QLabel(offer.title)
+        title = QLabel(self.offer.title)
         title.setObjectName("jobOfferTitle")
 
-        company = QLabel(offer.company)
+        company = QLabel(self.offer.company)
         company.setObjectName("jobOfferCompany")
 
         location = QLabel(
-            f"📍 {offer.location}"
-            if offer.location
+            f"📍 {self.offer.location}"
+            if self.offer.location
             else "📍 Localisation non renseignée"
         )
         location.setObjectName("jobOfferLocation")
@@ -50,10 +55,57 @@ class JobOfferCard(QFrame):
         open_button = QPushButton("Ouvrir →")
         open_button.setObjectName("jobOfferButton")
         open_button.setCursor(Qt.CursorShape.PointingHandCursor)
-
         open_button.clicked.connect(self._open_offer)
 
         layout.addWidget(open_button)
 
     def _open_offer(self) -> None:
         QDesktopServices.openUrl(QUrl(self.offer.url))
+
+    def _apply_styles(self) -> None:
+        self.setStyleSheet(
+            f"""
+            QFrame#jobOfferCard {{
+                background-color: {Colors.SURFACE};
+                border: 1px solid {Colors.BORDER};
+                border-radius: 12px;
+            }}
+
+            QLabel#jobOfferTitle {{
+                background-color: transparent;
+                font-size: 15px;
+                font-weight: 700;
+                color: {Colors.TEXT_PRIMARY};
+            }}
+
+            QLabel#jobOfferCompany {{
+                background-color: transparent;
+                font-size: 13px;
+                color: {Colors.TEXT_SECONDARY};
+            }}
+
+            QLabel#jobOfferLocation {{
+                background-color: transparent;
+                font-size: 12px;
+                color: {Colors.TEXT_SUBTLE};
+            }}
+
+            QPushButton#jobOfferButton {{
+                background-color: {Colors.BRAND_600};
+                color: {Colors.SURFACE};
+                border: none;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 13px;
+                font-weight: 600;
+            }}
+
+            QPushButton#jobOfferButton:hover {{
+                background-color: {Colors.BRAND_700};
+            }}
+
+            QPushButton#jobOfferButton:pressed {{
+                background-color: {Colors.BRAND_700};
+            }}
+            """
+        )
