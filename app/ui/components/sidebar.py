@@ -7,6 +7,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from app.ui.styles.colors import Colors
+
 
 class Sidebar(QWidget):
     page_changed = Signal(int)
@@ -85,50 +87,50 @@ class Sidebar(QWidget):
 
     def _apply_styles(self) -> None:
         self.setStyleSheet(
-            """
-            QWidget#sidebar {
-                background-color: #ffffff;
-                border-right: 1px solid #e2e8f0;
-            }
+            f"""
+            QWidget#sidebar {{
+                background-color: {Colors.SURFACE};
+                border-right: 1px solid {Colors.BORDER};
+            }}
 
-            QLabel#sidebarLogo {
-                color: #0f172a;
+            QLabel#sidebarLogo {{
+                color: {Colors.TEXT_PRIMARY};
                 font-size: 21px;
                 font-weight: 800;
                 padding-left: 8px;
-            }
+            }}
 
-            QLabel#sidebarSubtitle {
-                color: #94a3b8;
+            QLabel#sidebarSubtitle {{
+                color: {Colors.TEXT_SUBTLE};
                 font-size: 12px;
                 padding-left: 8px;
-            }
+            }}
 
-            QPushButton#sidebarButton {
+            QPushButton#sidebarButton {{
                 background-color: transparent;
-                color: #64748b;
+                color: {Colors.TEXT_MUTED};
                 border: none;
                 border-radius: 10px;
                 padding: 12px 14px;
                 text-align: left;
                 font-size: 14px;
                 font-weight: 600;
-            }
+            }}
 
-            QPushButton#sidebarButton:hover {
-                background-color: #fff1f2;
-                color: #e11d48;
-            }
+            QPushButton#sidebarButton:hover {{
+                background-color: {Colors.BRAND_SURFACE_HOVER};
+                color: {Colors.BRAND_600};
+            }}
 
-            QPushButton#sidebarButton:checked {
-                background-color: #ffe4e6;
-                color: #e11d48;
-            }
+            QPushButton#sidebarButton:checked {{
+                background-color: {Colors.BRAND_SURFACE};
+                color: {Colors.BRAND_600};
+            }}
 
-            QLabel#sidebarVersion {
-                color: #94a3b8;
+            QLabel#sidebarVersion {{
+                color: {Colors.TEXT_SUBTLE};
                 font-size: 11px;
                 padding-left: 8px;
-            }
+            }}
             """
         )
