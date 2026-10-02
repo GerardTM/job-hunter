@@ -103,6 +103,14 @@ class MainWindow(QMainWindow):
     def _toggle_theme(self) -> None:
         self.theme_manager.toggle()
 
+    def _refresh_pages_theme(self) -> None:
+        for page in (
+            self.dashboard_page,
+            self.jobs_page,
+            self.search_page,
+        ):
+            page.refresh_theme()
+
 
     def _apply_theme(self, dark: bool) -> None:
         self.setStyleSheet(
@@ -110,6 +118,4 @@ class MainWindow(QMainWindow):
         )
 
         self.sidebar.set_dark_mode(dark)
-        self.dashboard_page.refresh_theme()
-        self.jobs_page.refresh_theme()
-        self.search_page.refresh_theme()
+        self._refresh_pages_theme()
