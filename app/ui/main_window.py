@@ -11,6 +11,7 @@ from app.ui.components.sidebar import Sidebar
 from app.ui.pages.dashboard_page import DashboardPage
 from app.ui.pages.jobs_page import JobsPage
 from app.ui.pages.search_page import SearchPage
+from app.ui.styles.theme import get_light_theme
 
 
 class MainWindow(QMainWindow):
@@ -77,18 +78,4 @@ class MainWindow(QMainWindow):
 
 
     def _apply_styles(self) -> None:
-        self.setStyleSheet(
-            """
-            QMainWindow {
-                background-color: #f8fafc;
-            }
-
-            QWidget#centralWidget {
-                background-color: #f8fafc;
-            }
-
-            QStackedWidget#pages {
-                background-color: #f8fafc;
-            }
-            """
-        )
+        self.setStyleSheet(get_light_theme())
