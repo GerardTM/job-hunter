@@ -1,6 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QHBoxLayout,
+    QGridLayout,
     QLabel,
     QScrollArea,
     QVBoxLayout,
@@ -55,8 +55,8 @@ class DashboardPage(QWidget):
 
         layout.addLayout(header_layout)
 
-        stats_layout = QHBoxLayout()
-        stats_layout.setSpacing(16)
+        self.stats_layout = QGridLayout()
+        self.stats_layout.setSpacing(16)
 
         self.offer_count_card = StatCard(
             title="Offres trouvées",
@@ -82,15 +82,33 @@ class DashboardPage(QWidget):
             description="dernière vérification",
         )
 
-        stats_layout.addWidget(self.offer_count_card)
-        stats_layout.addWidget(self.monitoring_status_card)
-        stats_layout.addWidget(self.last_collection_card)
+        self.stats_layout.addWidget(
+            self.offer_count_card,
+            0,
+            0,
+        )
 
-        stats_layout.setStretch(0, 1)
-        stats_layout.setStretch(1, 1)
-        stats_layout.setStretch(2, 1)
+        self.stats_layout.addWidget(
+            self.monitoring_status_card,
+            0,
+            1,
+        )
 
-        layout.addLayout(stats_layout)
+        self.stats_layout.addWidget(
+            self.last_collection_card,
+            0,
+            2,
+        )
+
+        for column in range(3):
+            self.stats_layout.setColumnStretch(
+                column,
+                1,
+            )
+
+        layout.addLayout(self.stats_layout)
+
+        self._update_stats_layout()
 
         latest_offers_title = QLabel("Dernières offres")
         latest_offers_title.setObjectName("sectionTitle")
@@ -127,6 +145,38 @@ class DashboardPage(QWidget):
 
         layout.addWidget(scroll_area)
         layout.addStretch()
+
+    def _update_stats_layout(self) -> None:
+        width = self.width()
+
+        if width < 700:
+            columns = 1
+        elif width < 1050:
+            columns = 2
+        else:
+            columns = 3
+
+        cards = [
+            self.offer_count_card,
+            self.monitoring_status_card,
+            self.last_collection_card,
+        ]
+
+        for index, card in enumerate(cards):
+            row = index // columns
+            column = index % columns
+
+            self.stats_layout.addWidget(
+                card,
+                row,
+                column,
+            )
+
+        for column in range(3):
+            self.stats_layout.setColumnStretch(
+                column,
+                1 if column < columns else 0,
+            )
 
     def _refresh_dashboard(self) -> None:
         self._refresh_stats()
@@ -194,6 +244,10 @@ class DashboardPage(QWidget):
 
         for card in self.offers_container.findChildren(JobOfferCard):
             card._apply_styles()
+
+    def resizeEvent(self, event) -> None:
+        super().resizeEvent(event)
+        self._update_stats_layout() 
 
     def _apply_styles(self) -> None:
         colors = get_colors()
