@@ -39,3 +39,6 @@ class SearchPage(QWidget):
     def _save_search_config(self, config) -> None:
         self.search_config_repository.save(config)
         self.search_config = config
+
+    def refresh_theme(self) -> None:
+        self.search_config_form._apply_styles()
