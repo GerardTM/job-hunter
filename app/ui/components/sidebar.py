@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QPropertyAnimation, Qt, Signal
 from PySide6.QtWidgets import (
     QButtonGroup,
     QLabel,
@@ -21,6 +21,13 @@ class Sidebar(QWidget):
         self.setFixedWidth(240)
 
         self._compact = False
+
+        self._width_animation = QPropertyAnimation(
+            self,
+            b"minimumWidth",
+            self,
+        )
+        self._width_animation.setDuration(180)
 
         self._setup_ui()
         self._apply_styles()
@@ -117,7 +124,15 @@ class Sidebar(QWidget):
 
         self._compact = compact
 
-        self.setFixedWidth(72 if compact else 240)
+        target_width = 72 if compact else 240
+
+        self._width_animation.stop()
+        self._width_animation.setStartValue(self.width())
+        self._width_animation.setEndValue(target_width)
+        self._width_animation.start()
+
+        self.setMinimumWidth(target_width)
+        self.setMaximumWidth(target_width)
 
         layout = self.layout()
 
