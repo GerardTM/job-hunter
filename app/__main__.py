@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 
 from app.bootstrap import create_application
+from app.init_db import init_db
 from app.system.resources import resource_path
 from app.ui.main_window import MainWindow
 
@@ -19,8 +20,9 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 async def main():
-    application_service = create_application()
+    init_db()
 
+    application_service = create_application()
     application_service.start()
 
     await asyncio.sleep(0)
@@ -29,6 +31,7 @@ async def main():
         application_service,
         application_service.job_hunter_service,
     )
+
     window.show()
 
     print("🚀 Job Hunter started")
