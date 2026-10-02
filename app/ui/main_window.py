@@ -9,6 +9,7 @@ from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
 from app.ui.components.sidebar import Sidebar
 from app.ui.pages.dashboard_page import DashboardPage
+from app.ui.pages.jobs_page import JobsPage
 from app.ui.pages.search_page import SearchPage
 
 
@@ -51,7 +52,12 @@ class MainWindow(QMainWindow):
 
         self.pages.addWidget(self.dashboard_page)
 
-        self.pages.addWidget(self._create_jobs_page())
+        self.jobs_page = JobsPage(
+            application_service=self.application_service,
+            job_hunter_service=self.job_hunter_service,
+        )
+
+        self.pages.addWidget(self.jobs_page)
 
         self.pages.addWidget(self.search_page)
 
@@ -69,10 +75,6 @@ class MainWindow(QMainWindow):
     def _change_page(self, page_index: int) -> None:
         self.pages.setCurrentIndex(page_index)
 
-    def _create_jobs_page(self) -> QWidget:
-        page = QWidget()
-
-        return page
 
     def _apply_styles(self) -> None:
         self.setStyleSheet(
