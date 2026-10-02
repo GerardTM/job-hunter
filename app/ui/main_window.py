@@ -51,6 +51,10 @@ class MainWindow(QMainWindow):
 
         self.sidebar = Sidebar()
 
+        self.sidebar.set_dark_mode(
+            self.theme_manager.is_dark
+        )
+
         self.sidebar.theme_toggle_requested.connect(
             self._toggle_theme
         )
