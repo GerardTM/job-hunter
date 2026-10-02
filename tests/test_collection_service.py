@@ -58,7 +58,9 @@ def test_collect_saves_new_offers():
 
     new_offers = service.collect(collector)
 
-    assert new_offers == 2
+    assert len(new_offers) == 2
+    assert new_offers[0].url == "https://example.com/jobs/1"
+    assert new_offers[1].url == "https://example.com/jobs/2"
 
 
 def test_collect_ignores_duplicate_offers():
@@ -71,15 +73,15 @@ def test_collect_ignores_duplicate_offers():
     first_collection = service.collect(collector)
     second_collection = service.collect(collector)
 
-    assert first_collection == 1
-    assert second_collection == 0
+    assert len(first_collection) == 1
+    assert len(second_collection) == 0
 
 
-def test_collect_returns_zero_when_no_offers_are_found():
+def test_collect_returns_empty_list_when_no_offers_are_found():
     service = create_collection_service()
 
     collector = FakeCollector([])
 
     new_offers = service.collect(collector)
 
-    assert new_offers == 0
+    assert new_offers == []

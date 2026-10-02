@@ -3,6 +3,7 @@ from app.collectors.base import JobOfferCollector
 from app.config.search_repository import SearchConfigRepository
 from app.config.settings import settings
 from app.database import SessionLocal
+from app.models.job_offer import JobOffer
 from app.repositories.job_offer_repository import JobOfferRepository
 from app.services.collection_service import CollectionService
 from app.services.job_offer_service import JobOfferService
@@ -16,7 +17,7 @@ class JobHunterService:
     ):
         self.search_config_repository = search_config_repository
 
-    def collect_jobs(self) -> int:
+    def collect_jobs(self) -> list[JobOffer]:
         search_config = self.search_config_repository.load()
 
         collectors: list[JobOfferCollector] = [
