@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
 from app.ui.components.job_offer_card import JobOfferCard
+from app.ui.styles.colors import Colors
 
 
 class JobsPage(QWidget):
@@ -93,64 +94,43 @@ class JobsPage(QWidget):
 
     def _apply_styles(self) -> None:
         self.setStyleSheet(
-            """
-            QWidget {
-                background-color: #f8fafc;
-                color: #0f172a;
-            }
+            f"""
+            QWidget {{
+                background-color: {Colors.BACKGROUND};
+                color: {Colors.TEXT_PRIMARY};
+            }}
 
-            QLabel#pageTitle {
+            QLabel#pageTitle {{
                 background-color: transparent;
                 font-size: 28px;
                 font-weight: 700;
-                color: #0f172a;
-            }
+                color: {Colors.TEXT_PRIMARY};
+            }}
 
-            QLabel#pageSubtitle {
+            QLabel#pageSubtitle {{
                 background-color: transparent;
                 font-size: 14px;
-                color: #64748b;
-            }
+                color: {Colors.TEXT_MUTED};
+            }}
 
-            QScrollArea#jobsScrollArea {
+            QScrollArea#jobsScrollArea {{
                 background-color: transparent;
                 border: none;
-            }
+            }}
 
-            QScrollArea#jobsScrollArea > QWidget > QWidget {
+            QScrollArea#jobsScrollArea > QWidget > QWidget {{
                 background-color: transparent;
-            }
+            }}
 
-            QWidget#jobsContainer {
+            QWidget#jobsContainer {{
                 background-color: transparent;
-            }
+            }}
 
-            QLabel#emptyLabel {
+            QLabel#emptyLabel {{
                 background-color: transparent;
                 padding: 24px;
                 font-size: 14px;
-                color: #94a3b8;
-            }
-
-            QScrollBar:vertical {
-                background-color: transparent;
-                width: 8px;
-                margin: 4px 0 4px 4px;
-            }
-
-            QScrollBar::handle:vertical {
-                background-color: #cbd5e1;
-                border-radius: 4px;
-                min-height: 30px;
-            }
-
-            QScrollBar::handle:vertical:hover {
-                background-color: #94a3b8;
-            }
-
-            QScrollBar::add-line:vertical,
-            QScrollBar::sub-line:vertical {
-                height: 0;
-            }
+                color: {Colors.TEXT_SUBTLE};
+            }}
             """
         )
