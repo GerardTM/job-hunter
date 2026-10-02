@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
 
 from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
+from app.ui.components.job_offer_card import JobOfferCard
 from app.ui.components.stat_card import StatCard
 
 
@@ -89,7 +90,7 @@ class MainWindow(QMainWindow):
 
         offers_layout = QVBoxLayout(offers_container)
         offers_layout.setContentsMargins(0, 0, 0, 0)
-        offers_layout.setSpacing(0)
+        offers_layout.setSpacing(8)
 
         if not latest_offers:
             empty_label = QLabel("Aucune offre trouvée.")
@@ -98,15 +99,10 @@ class MainWindow(QMainWindow):
             offers_layout.addWidget(empty_label)
         else:
             for offer in latest_offers:
-                offer_label = QLabel(
-                    f"{offer.title} — {offer.company}"
-                )
-                offer_label.setObjectName("offerLabel")
-
-                offers_layout.addWidget(offer_label)
+                offer_card = JobOfferCard(offer)
+                offers_layout.addWidget(offer_card)
 
         layout.addWidget(offers_container)
-
         layout.addStretch()
 
         self.setCentralWidget(central_widget)
@@ -137,16 +133,48 @@ class MainWindow(QMainWindow):
             }
 
             QFrame#offersContainer {
+                background-color: transparent;
+                border: none;
+            }
+
+            QFrame#jobOfferCard {
                 background-color: white;
                 border: 1px solid #e2e8f0;
                 border-radius: 12px;
             }
 
-            QLabel#offerLabel {
-                padding: 16px 20px;
-                font-size: 14px;
-                color: #334155;
-                border-bottom: 1px solid #f1f5f9;
+            QLabel#jobOfferTitle {
+                font-size: 15px;
+                font-weight: 700;
+                color: #0f172a;
+            }
+
+            QLabel#jobOfferCompany {
+                font-size: 13px;
+                color: #475569;
+            }
+
+            QLabel#jobOfferLocation {
+                font-size: 12px;
+                color: #94a3b8;
+            }
+
+            QPushButton#jobOfferButton {
+                background-color: #e11d48;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 8px 14px;
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            QPushButton#jobOfferButton:hover {
+                background-color: #be123c;
+            }
+
+            QPushButton#jobOfferButton:pressed {
+                background-color: #9f1239;
             }
 
             QLabel#emptyLabel {
@@ -156,4 +184,3 @@ class MainWindow(QMainWindow):
             }
             """
         )
-        
