@@ -58,11 +58,28 @@ def test_save_if_new_rejects_duplicate_offer():
     assert second_saved is None
 
 
+def test_save_if_new_rejects_same_source_id_with_different_url():
+    service = create_test_service()
+
+    first_offer = create_job_offer()
+    second_offer = create_job_offer(
+        "https://redirect.example.com/jobs/123?tracking=changed"
+    )
+
+    first_saved = service.save_if_new(first_offer)
+    second_saved = service.save_if_new(second_offer)
+
+    assert first_saved is not None
+    assert second_saved is None
+
+
 def test_find_all():
     service = create_test_service()
 
     service.save_if_new(create_job_offer("https://example.com/jobs/123"))
-    service.save_if_new(create_job_offer("https://example.com/jobs/456"))
+    second_offer = create_job_offer("https://example.com/jobs/456")
+    second_offer.source_id = "456"
+    service.save_if_new(second_offer)
 
     offers = service.find_all()
 

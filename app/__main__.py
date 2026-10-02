@@ -2,10 +2,12 @@ import asyncio
 import logging
 import sys
 
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 
 from app.bootstrap import create_application
+from app.system.resources import resource_path
 from app.ui.main_window import MainWindow
 
 logging.basicConfig(
@@ -41,6 +43,16 @@ async def main():
 
 if __name__ == "__main__":
     qt_application = QApplication(sys.argv)
+
+    qt_application.setWindowIcon(
+        QIcon(
+            str(
+                resource_path(
+                    "assets/icon.png"
+                )
+            )
+        )
+    )
 
     event_loop = QEventLoop(qt_application)
     asyncio.set_event_loop(event_loop)

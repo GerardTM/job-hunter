@@ -26,6 +26,18 @@ class JobOfferRepository:
 
         return self.session.scalar(statement)
 
+    def find_by_source_id(
+        self,
+        source: str,
+        source_id: str,
+    ) -> JobOffer | None:
+        statement = select(JobOffer).where(
+            JobOffer.source == source,
+            JobOffer.source_id == source_id,
+        )
+
+        return self.session.scalar(statement)
+
     def exists_by_url(self, url: str) -> bool:
         return self.find_by_url(url) is not None
 

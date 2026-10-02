@@ -8,6 +8,15 @@ class JobOfferService:
         self.repository = repository
 
     def save_if_new(self, job_offer: JobOffer) -> JobOffer | None:
+        if (
+            job_offer.source_id is not None
+            and self.repository.find_by_source_id(
+                job_offer.source,
+                job_offer.source_id,
+            )
+        ):
+            return None
+
         if self.repository.exists_by_url(job_offer.url):
             return None
 
