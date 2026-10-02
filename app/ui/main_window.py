@@ -1,8 +1,9 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
-    QFrame,
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QScrollArea,
     QVBoxLayout,
     QWidget,
 )
@@ -85,11 +86,18 @@ class MainWindow(QMainWindow):
 
         latest_offers = self.job_hunter_service.get_latest_offers()
 
-        offers_container = QFrame()
+        scroll_area = QScrollArea()
+        scroll_area.setObjectName("offersScrollArea")
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
+
+        offers_container = QWidget()
         offers_container.setObjectName("offersContainer")
 
         offers_layout = QVBoxLayout(offers_container)
-        offers_layout.setContentsMargins(0, 0, 0, 0)
+        offers_layout.setContentsMargins(0, 0, 8, 0)
         offers_layout.setSpacing(8)
 
         if not latest_offers:
@@ -102,7 +110,11 @@ class MainWindow(QMainWindow):
                 offer_card = JobOfferCard(offer)
                 offers_layout.addWidget(offer_card)
 
-        layout.addWidget(offers_container)
+        offers_layout.addStretch()
+
+        scroll_area.setWidget(offers_container)
+
+        layout.addWidget(scroll_area)
         layout.addStretch()
 
         self.setCentralWidget(central_widget)
@@ -132,9 +144,13 @@ class MainWindow(QMainWindow):
                 margin-top: 8px;
             }
 
-            QFrame#offersContainer {
+            QScrollArea#offersScrollArea {
                 background-color: transparent;
                 border: none;
+            }
+
+            QWidget#offersContainer {
+                background-color: transparent;
             }
 
             QFrame#jobOfferCard {
@@ -181,6 +197,27 @@ class MainWindow(QMainWindow):
                 padding: 24px;
                 font-size: 14px;
                 color: #94a3b8;
+            }
+
+            QScrollBar:vertical {
+                background-color: transparent;
+                width: 8px;
+                margin: 4px 0 4px 4px;
+            }
+
+            QScrollBar::handle:vertical {
+                background-color: #cbd5e1;
+                border-radius: 4px;
+                min-height: 30px;
+            }
+
+            QScrollBar::handle:vertical:hover {
+                background-color: #94a3b8;
+            }
+
+            QScrollBar::add-line:vertical,
+            QScrollBar::sub-line:vertical {
+                height: 0;
             }
             """
         )
