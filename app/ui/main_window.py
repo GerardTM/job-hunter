@@ -1,3 +1,4 @@
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QMainWindow,
@@ -9,6 +10,7 @@ from app.config.app_settings import AppSettings
 from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
 from app.system.paths import AppPaths
+from app.system.resources import resource_path
 from app.ui.components.sidebar import Sidebar
 from app.ui.pages.dashboard_page import DashboardPage
 from app.ui.pages.jobs_page import JobsPage
@@ -24,6 +26,16 @@ class MainWindow(QMainWindow):
         job_hunter_service: JobHunterService,
     ):
         super().__init__()
+
+        self.setWindowIcon(
+            QIcon(
+                str(
+                    resource_path(
+                        "assets/icon.png"
+                    )
+                )
+            )
+        )
 
         self.application_service = application_service
         self.job_hunter_service = job_hunter_service
