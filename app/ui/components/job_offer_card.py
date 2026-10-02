@@ -31,11 +31,14 @@ class JobOfferCard(QFrame):
 
         content_layout = QVBoxLayout()
         content_layout.setSpacing(5)
+        content_layout.setContentsMargins(0, 0, 0, 0)
 
         title = QLabel(self.offer.title)
+        title.setWordWrap(True)
         title.setObjectName("jobOfferTitle")
 
         company = QLabel(self.offer.company)
+        company.setWordWrap(True)
         company.setObjectName("jobOfferCompany")
 
         location = QLabel(
@@ -49,7 +52,7 @@ class JobOfferCard(QFrame):
         content_layout.addWidget(company)
         content_layout.addWidget(location)
 
-        layout.addLayout(content_layout)
+        layout.addLayout(content_layout, 1)
         layout.addStretch()
 
         open_button = QPushButton("Ouvrir →")
