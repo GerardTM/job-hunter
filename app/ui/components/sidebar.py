@@ -21,6 +21,7 @@ class Sidebar(QWidget):
         self.setFixedWidth(240)
 
         self._compact = False
+        self._dark_mode = False
 
         self._width_animation = QPropertyAnimation(
             self,
@@ -37,14 +38,14 @@ class Sidebar(QWidget):
         layout.setContentsMargins(16, 20, 16, 20)
         layout.setSpacing(8)
 
-        logo = QLabel("Job Hunter")
-        logo.setObjectName("sidebarLogo")
+        self.sidebar_logo = QLabel("Job Hunter")
+        self.sidebar_logo.setObjectName("sidebarLogo")
 
-        subtitle = QLabel("Job monitoring")
-        subtitle.setObjectName("sidebarSubtitle")
+        self.sidebar_subtitle = QLabel("Job monitoring")
+        self.sidebar_subtitle.setObjectName("sidebarSubtitle")
 
-        layout.addWidget(logo)
-        layout.addWidget(subtitle)
+        layout.addWidget(self.sidebar_logo)
+        layout.addWidget(self.sidebar_subtitle)
 
         layout.addSpacing(24)
 
@@ -91,10 +92,9 @@ class Sidebar(QWidget):
 
         layout.addStretch()
 
-        version = QLabel("Job Hunter v0.1.0")
-        version.setObjectName("sidebarVersion")
-
-        layout.addWidget(version)
+        self.sidebar_version = QLabel("Job Hunter v0.1.0")
+        self.sidebar_version.setObjectName("sidebarVersion")
+        layout.addWidget(self.sidebar_version)
 
         self.dashboard_button.setChecked(True)
 
@@ -114,6 +114,8 @@ class Sidebar(QWidget):
         return button
 
     def set_dark_mode(self, dark: bool) -> None:
+        self._dark_mode = dark
+
         if self._compact:
             self.theme_button.setText(
                 "☀" if dark else "☾"
@@ -138,6 +140,24 @@ class Sidebar(QWidget):
             return
 
         self._compact = compact
+
+        self.sidebar_logo.setText(
+            "JH" if compact else "Job Hunter"
+        )
+
+        self.sidebar_subtitle.setVisible(not compact)
+        self.sidebar_version.setVisible(not compact)
+
+        self.theme_button.setText(
+            "☀" if self._dark_mode else "☾"
+        )
+
+        if not compact:
+            self.theme_button.setText(
+                "☀  Mode clair"
+                if self._dark_mode
+                else "☾  Mode sombre"
+            )
 
         target_width = 72 if compact else 240
 
