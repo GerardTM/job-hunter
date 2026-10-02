@@ -66,3 +66,6 @@ class ApplicationService(QObject):
         await self._scheduler_task
 
         self._scheduler_task = None
+
+    async def collect_now(self) -> None:
+        await self._run_collection()

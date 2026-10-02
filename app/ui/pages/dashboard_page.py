@@ -1,7 +1,11 @@
+import asyncio
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QGridLayout,
+    QHBoxLayout,
     QLabel,
+    QPushButton,
     QScrollArea,
     QVBoxLayout,
     QWidget,
@@ -39,8 +43,11 @@ class DashboardPage(QWidget):
         layout.setContentsMargins(32, 28, 32, 28)
         layout.setSpacing(24)
 
-        header_layout = QVBoxLayout()
-        header_layout.setSpacing(6)
+        header_layout = QHBoxLayout()
+        header_layout.setSpacing(16)
+
+        title_layout = QVBoxLayout()
+        title_layout.setSpacing(6)
 
         title = QLabel("Dashboard")
         title.setObjectName("pageTitle")
@@ -50,8 +57,22 @@ class DashboardPage(QWidget):
         )
         subtitle.setObjectName("pageSubtitle")
 
-        header_layout.addWidget(title)
-        header_layout.addWidget(subtitle)
+        title_layout.addWidget(title)
+        title_layout.addWidget(subtitle)
+
+        header_layout.addLayout(title_layout)
+        header_layout.addStretch()
+
+        self.refresh_button = QPushButton("↻  Actualiser")
+        self.refresh_button.setObjectName("refreshButton")
+        self.refresh_button.setCursor(
+            Qt.CursorShape.PointingHandCursor
+        )
+        self.refresh_button.clicked.connect(
+            self._collect_now
+        )
+
+        header_layout.addWidget(self.refresh_button)
 
         layout.addLayout(header_layout)
 
@@ -249,6 +270,22 @@ class DashboardPage(QWidget):
         super().resizeEvent(event)
         self._update_stats_layout() 
 
+    def _collect_now(self) -> None:
+        self.refresh_button.setEnabled(False)
+        self.refresh_button.setText("↻  Actualisation...")
+
+        asyncio.create_task(
+            self._run_manual_collection()
+        )
+
+
+    async def _run_manual_collection(self) -> None:
+        try:
+            await self.application_service.collect_now()
+        finally:
+            self.refresh_button.setEnabled(True)
+            self.refresh_button.setText("↻  Actualiser")
+
     def _apply_styles(self) -> None:
         colors = get_colors()
         self.setStyleSheet(
@@ -366,6 +403,29 @@ class DashboardPage(QWidget):
                 padding: 24px;
                 font-size: 14px;
                 color: {colors.TEXT_SUBTLE};
+            }}
+
+            QPushButton#refreshButton {{
+                background-color: {colors.BRAND_600};
+                color: {colors.SURFACE};
+                border: none;
+                border-radius: 8px;
+                padding: 9px 14px;
+                font-size: 13px;
+                font-weight: 600;
+            }}
+
+            QPushButton#refreshButton:hover {{
+                background-color: {colors.BRAND_700};
+            }}
+
+            QPushButton#refreshButton:pressed {{
+                background-color: {colors.BRAND_700};
+            }}
+
+            QPushButton#refreshButton:disabled {{
+                background-color: {colors.BORDER};
+                color: {colors.TEXT_MUTED};
             }}
             """
         )
