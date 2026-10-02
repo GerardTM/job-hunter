@@ -18,6 +18,7 @@ class SchedulerService:
         self.task = task
         self.interval_seconds = interval_seconds
         self._running = False
+        self._stop_event = asyncio.Event()
 
     @property
     def is_running(self) -> bool:
@@ -25,6 +26,7 @@ class SchedulerService:
 
     async def run(self) -> None:
         self._running = True
+        self._stop_event.clear()
 
         try:
             while self._running:
@@ -34,9 +36,19 @@ class SchedulerService:
                     logger.exception("Scheduled task failed")
 
                 if self._running:
-                    await asyncio.sleep(self.interval_seconds)
+                    await self._wait_for_next_run()
         finally:
             self._running = False
 
+    async def _wait_for_next_run(self) -> None:
+        try:
+            await asyncio.wait_for(
+                self._stop_event.wait(),
+                timeout=self.interval_seconds,
+            )
+        except TimeoutError:
+            pass
+
     def stop(self) -> None:
         self._running = False
+        self._stop_event.set()
