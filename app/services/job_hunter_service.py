@@ -33,9 +33,11 @@ class JobHunterService:
             job_offer_service = JobOfferService(repository)
             collection_service = CollectionService(job_offer_service)
 
-            new_offers = 0
+            new_offers = []
 
             for collector in collectors:
-                new_offers += collection_service.collect(collector)
+                new_offers.extend(
+                    collection_service.collect(collector)
+                )
 
             return new_offers

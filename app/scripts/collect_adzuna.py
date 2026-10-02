@@ -1,14 +1,11 @@
-from pathlib import Path
-
 from app.config.search_repository import SearchConfigRepository
 from app.services.job_hunter_service import JobHunterService
-
-SEARCH_CONFIG_PATH = Path("search.json")
+from app.system.paths import AppPaths
 
 
 def main():
     search_config_repository = SearchConfigRepository(
-        SEARCH_CONFIG_PATH
+        AppPaths.search_config_path()
     )
 
     job_hunter_service = JobHunterService(
@@ -17,7 +14,9 @@ def main():
 
     new_offers = job_hunter_service.collect_jobs()
 
-    print(f"✅ Collection completed: {new_offers} new offer(s)")
+    print(
+        f"✅ Collection completed: {len(new_offers)} new offer(s)"
+    )
 
 
 if __name__ == "__main__":
