@@ -92,6 +92,12 @@ class JobsPage(QWidget):
 
         self.jobs_layout.addStretch()
 
+    def refresh_theme(self) -> None:
+        self._apply_styles()
+
+        for card in self.jobs_container.findChildren(JobOfferCard):
+            card._apply_styles()
+
     def _apply_styles(self) -> None:
         colors = get_colors()
         self.setStyleSheet(

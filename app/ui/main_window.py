@@ -110,5 +110,5 @@ class MainWindow(QMainWindow):
         )
 
         self.sidebar.set_dark_mode(dark)
-
-        self.dashboard_page.refresh_theme()   
+        self.dashboard_page.refresh_theme()
+        self.jobs_page.refresh_theme()
