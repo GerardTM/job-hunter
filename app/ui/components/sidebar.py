@@ -99,6 +99,12 @@ class Sidebar(QWidget):
 
         return button
 
+    def set_dark_mode(self, dark: bool) -> None:
+        self.theme_button.setText(
+            "☀  Mode clair" if dark else "☾  Mode sombre"
+        )
+        self._apply_styles()    
+
     def _apply_styles(self) -> None:
         colors = get_colors()
         self.setStyleSheet(

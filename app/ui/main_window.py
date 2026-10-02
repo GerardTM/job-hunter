@@ -108,3 +108,5 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(
             self.theme_manager.stylesheet()
         )
+
+        self.sidebar.set_dark_mode(dark)    
