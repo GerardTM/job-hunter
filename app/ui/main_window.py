@@ -8,9 +8,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from app.config.search import SearchConfig
+from app.config.search_repository import SearchConfigRepository
 from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
+from app.system.paths import AppPaths
 from app.ui.components.job_offer_card import JobOfferCard
+from app.ui.components.search_config_form import SearchConfigForm
 from app.ui.components.stat_card import StatCard
 
 
@@ -26,6 +30,12 @@ class MainWindow(QMainWindow):
         self.application_service = application_service
         self.job_hunter_service = job_hunter_service
 
+        self.search_config_repository = SearchConfigRepository(
+            AppPaths.search_config_path()
+        )
+
+        self.search_config = self.search_config_repository.load()
+
         self.setWindowTitle("Job Hunter")
         self.resize(900, 600)
 
@@ -34,6 +44,10 @@ class MainWindow(QMainWindow):
 
         self.application_service.collection_completed.connect(
             self._refresh_dashboard
+        )
+
+        self.search_config_form.saved.connect(
+            self._save_search_config
         )
 
     def _setup_ui(self) -> None:
@@ -58,6 +72,12 @@ class MainWindow(QMainWindow):
         header_layout.addWidget(subtitle)
 
         layout.addLayout(header_layout)
+
+        self.search_config_form = SearchConfigForm(
+            self.search_config
+        )
+
+        layout.addWidget(self.search_config_form)
 
         stats_layout = QHBoxLayout()
         stats_layout.setSpacing(16)
@@ -167,6 +187,10 @@ class MainWindow(QMainWindow):
                 self.offers_layout.addWidget(offer_card)
 
         self.offers_layout.addStretch()
+
+    def _save_search_config(self, config: SearchConfig) -> None:
+        self.search_config_repository.save(config)
+        self.search_config = config
 
     def _apply_styles(self) -> None:
         self.setStyleSheet(
