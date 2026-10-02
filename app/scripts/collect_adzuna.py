@@ -1,26 +1,22 @@
+from pathlib import Path
+
 from app.collectors.adzuna_collector import AdzunaCollector
-from app.config.search import SearchConfig
+from app.config.search_repository import SearchConfigRepository
 from app.config.settings import settings
 from app.database import SessionLocal
 from app.repositories.job_offer_repository import JobOfferRepository
 from app.services.collection_service import CollectionService
 from app.services.job_offer_service import JobOfferService
 
+SEARCH_CONFIG_PATH = Path("search.json")
+
 
 def main():
-    search_config = SearchConfig(
-        keywords=[
-            "fullstack developer",
-            "java developer",
-            "angular developer",
-        ],
-        locations=[
-            "Rennes",
-            "Brest",
-            "Nantes",
-        ],
-        results_per_page=20,
+    search_config_repository = SearchConfigRepository(
+        SEARCH_CONFIG_PATH
     )
+
+    search_config = search_config_repository.load()
 
     collector = AdzunaCollector(
         app_id=settings.adzuna_app_id,
