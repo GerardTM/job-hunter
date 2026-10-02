@@ -11,6 +11,7 @@ from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
 from app.ui.components.job_offer_card import JobOfferCard
 from app.ui.components.stat_card import StatCard
+from app.ui.styles.colors import Colors
 
 
 class DashboardPage(QWidget):
@@ -190,127 +191,120 @@ class DashboardPage(QWidget):
 
     def _apply_styles(self) -> None:
         self.setStyleSheet(
-            """
-            QWidget {
-                background-color: #f8fafc;
-                color: #0f172a;
-            }
+            f"""
+            QWidget {{
+                background-color: {Colors.BACKGROUND};
+                color: {Colors.TEXT_PRIMARY};
+            }}
 
-            QLabel#pageTitle {
+            QLabel#pageTitle {{
+                background-color: transparent;
                 font-size: 28px;
                 font-weight: 700;
-                color: #0f172a;
-            }
+                color: {Colors.TEXT_PRIMARY};
+            }}
 
-            QLabel#pageSubtitle {
+            QLabel#pageSubtitle {{
+                background-color: transparent;
                 font-size: 14px;
-                color: #64748b;
-            }
+                color: {Colors.TEXT_MUTED};
+            }}
 
-            QLabel#sectionTitle {
+            QLabel#sectionTitle {{
+                background-color: transparent;
                 font-size: 18px;
                 font-weight: 700;
-                color: #0f172a;
+                color: {Colors.TEXT_PRIMARY};
                 margin-top: 8px;
-            }
+            }}
 
-            QFrame#statCard {
-                background-color: white;
-                border: 1px solid #e2e8f0;
+            QFrame#statCard {{
+                background-color: {Colors.SURFACE};
+                border: 1px solid {Colors.BORDER};
                 border-radius: 8px;
-            }
+            }}
 
-            QLabel#statCardTitle {
+            QLabel#statCardTitle {{
+                background-color: transparent;
                 font-size: 13px;
                 font-weight: 600;
-                color: #475569;
-            }
+                color: {Colors.TEXT_SECONDARY};
+            }}
 
-            QLabel#statCardValue {
+            QLabel#statCardValue {{
+                background-color: transparent;
                 font-size: 24px;
                 font-weight: 700;
-                color: #0f172a;
-            }
+                color: {Colors.TEXT_PRIMARY};
+            }}
 
-            QLabel#statCardDescription {
+            QLabel#statCardDescription {{
+                background-color: transparent;
                 font-size: 12px;
-                color: #64748b;
-            }
+                color: {Colors.TEXT_MUTED};
+            }}
 
-            QScrollArea#offersScrollArea {
+            QScrollArea#offersScrollArea {{
                 background-color: transparent;
                 border: none;
-            }
+            }}
 
-            QWidget#offersContainer {
+            QScrollArea#offersScrollArea > QWidget > QWidget {{
                 background-color: transparent;
-            }
+            }}
 
-            QFrame#jobOfferCard {
-                background-color: white;
-                border: 1px solid #e2e8f0;
+            QWidget#offersContainer {{
+                background-color: transparent;
+            }}
+
+            QFrame#jobOfferCard {{
+                background-color: {Colors.SURFACE};
+                border: 1px solid {Colors.BORDER};
                 border-radius: 12px;
-            }
+            }}
 
-            QLabel#jobOfferTitle {
+            QLabel#jobOfferTitle {{
+                background-color: transparent;
                 font-size: 15px;
                 font-weight: 700;
-                color: #0f172a;
-            }
+                color: {Colors.TEXT_PRIMARY};
+            }}
 
-            QLabel#jobOfferCompany {
+            QLabel#jobOfferCompany {{
+                background-color: transparent;
                 font-size: 13px;
-                color: #475569;
-            }
+                color: {Colors.TEXT_SECONDARY};
+            }}
 
-            QLabel#jobOfferLocation {
+            QLabel#jobOfferLocation {{
+                background-color: transparent;
                 font-size: 12px;
-                color: #94a3b8;
-            }
+                color: {Colors.TEXT_SUBTLE};
+            }}
 
-            QPushButton#jobOfferButton {
-                background-color: #e11d48;
-                color: white;
+            QPushButton#jobOfferButton {{
+                background-color: {Colors.BRAND_600};
+                color: {Colors.SURFACE};
                 border: none;
                 border-radius: 8px;
                 padding: 8px 14px;
                 font-size: 13px;
                 font-weight: 600;
-            }
+            }}
 
-            QPushButton#jobOfferButton:hover {
-                background-color: #be123c;
-            }
+            QPushButton#jobOfferButton:hover {{
+                background-color: {Colors.BRAND_700};
+            }}
 
-            QPushButton#jobOfferButton:pressed {
-                background-color: #9f1239;
-            }
+            QPushButton#jobOfferButton:pressed {{
+                background-color: {Colors.BRAND_700};
+            }}
 
-            QLabel#emptyLabel {
+            QLabel#emptyLabel {{
+                background-color: transparent;
                 padding: 24px;
                 font-size: 14px;
-                color: #94a3b8;
-            }
-
-            QScrollBar:vertical {
-                background-color: transparent;
-                width: 8px;
-                margin: 4px 0 4px 4px;
-            }
-
-            QScrollBar::handle:vertical {
-                background-color: #cbd5e1;
-                border-radius: 4px;
-                min-height: 30px;
-            }
-
-            QScrollBar::handle:vertical:hover {
-                background-color: #94a3b8;
-            }
-
-            QScrollBar::add-line:vertical,
-            QScrollBar::sub-line:vertical {
-                height: 0;
-            }
+                color: {Colors.TEXT_SUBTLE};
+            }}
             """
         )
