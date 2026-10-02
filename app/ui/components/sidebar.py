@@ -20,6 +20,8 @@ class Sidebar(QWidget):
         self.setObjectName("sidebar")
         self.setFixedWidth(240)
 
+        self._compact = False
+
         self._setup_ui()
         self._apply_styles()
 
@@ -100,10 +102,44 @@ class Sidebar(QWidget):
         return button
 
     def set_dark_mode(self, dark: bool) -> None:
-        self.theme_button.setText(
-            "☀  Mode clair" if dark else "☾  Mode sombre"
+        if self._compact:
+            self.theme_button.setText("☀" if dark else "☾")
+        else:
+            self.theme_button.setText(
+                "☀  Mode clair" if dark else "☾  Mode sombre"
+            )
+
+        self._apply_styles()
+
+    def set_compact(self, compact: bool) -> None:
+        if self._compact == compact:
+            return
+
+        self._compact = compact
+
+        self.setFixedWidth(72 if compact else 240)
+
+        layout = self.layout()
+
+        if layout is not None:
+            layout.setContentsMargins(
+                8 if compact else 16,
+                20,
+                8 if compact else 16,
+                20,
+            )
+
+        self.dashboard_button.setText(
+            "⌂" if compact else "⌂  Dashboard"
         )
-        self._apply_styles()    
+        self.jobs_button.setText(
+            "▣" if compact else "▣  Offres"
+        )
+        self.search_button.setText(
+            "⚙" if compact else "⚙  Recherche"
+        )
+
+        self._apply_styles()
 
     def _apply_styles(self) -> None:
         colors = get_colors()
@@ -168,6 +204,11 @@ class Sidebar(QWidget):
                 color: {colors.TEXT_SUBTLE};
                 font-size: 11px;
                 padding-left: 8px;
+            }}
+
+            QPushButton#sidebarButton,
+            QPushButton#themeButton {{
+                min-height: 42px;
             }}
             """
         )

@@ -118,10 +118,9 @@ class MainWindow(QMainWindow):
     def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
 
-        if self.width() < 850:
-            self.sidebar.setFixedWidth(190)
-        else:
-            self.sidebar.setFixedWidth(240)
+        self.sidebar.set_compact(
+            self.width() < 850
+        )
 
     def _apply_theme(self, dark: bool) -> None:
         self.setStyleSheet(
