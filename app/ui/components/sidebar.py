@@ -12,6 +12,7 @@ from app.ui.styles.colors import get_colors
 
 class Sidebar(QWidget):
     page_changed = Signal(int)
+    theme_toggle_requested = Signal()
 
     def __init__(self):
         super().__init__()
@@ -60,6 +61,19 @@ class Sidebar(QWidget):
         layout.addWidget(self.dashboard_button)
         layout.addWidget(self.jobs_button)
         layout.addWidget(self.search_button)
+
+        self.theme_button = QPushButton("☾  Mode sombre")
+        self.theme_button.setObjectName("themeButton")
+        self.theme_button.setCheckable(False)
+        self.theme_button.setCursor(
+            Qt.CursorShape.PointingHandCursor
+        )
+
+        self.theme_button.clicked.connect(
+            self.theme_toggle_requested.emit
+        )
+
+        layout.addWidget(self.theme_button)
 
         layout.addStretch()
 
@@ -125,6 +139,22 @@ class Sidebar(QWidget):
 
             QPushButton#sidebarButton:checked {{
                 background-color: {colors.BRAND_SURFACE};
+                color: {colors.BRAND_600};
+            }}
+
+            QPushButton#themeButton {{
+                background-color: transparent;
+                color: {colors.TEXT_MUTED};
+                border: none;
+                border-radius: 10px;
+                padding: 12px 14px;
+                text-align: left;
+                font-size: 14px;
+                font-weight: 600;
+            }}
+
+            QPushButton#themeButton:hover {{
+                background-color: {colors.BRAND_SURFACE_HOVER};
                 color: {colors.BRAND_600};
             }}
 

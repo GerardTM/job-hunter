@@ -11,7 +11,7 @@ from app.ui.components.sidebar import Sidebar
 from app.ui.pages.dashboard_page import DashboardPage
 from app.ui.pages.jobs_page import JobsPage
 from app.ui.pages.search_page import SearchPage
-from app.ui.styles.theme import get_light_theme
+from app.ui.styles.theme_manager import ThemeManager
 
 
 class MainWindow(QMainWindow):
@@ -29,6 +29,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Job Hunter")
         self.resize(1100, 700)
 
+        self.theme_manager = ThemeManager()
+
         self._setup_ui()
 
     def _setup_ui(self) -> None:
@@ -40,6 +42,14 @@ class MainWindow(QMainWindow):
         layout.setSpacing(0)
 
         self.sidebar = Sidebar()
+
+        self.sidebar.theme_toggle_requested.connect(
+            self._toggle_theme
+        )
+
+        self.theme_manager.theme_changed.connect(
+            self._apply_theme
+        )
 
         self.pages = QStackedWidget()
         self.pages.setObjectName("pages")
@@ -78,4 +88,15 @@ class MainWindow(QMainWindow):
 
 
     def _apply_styles(self) -> None:
-        self.setStyleSheet(get_light_theme())
+        self.setStyleSheet(
+            self.theme_manager.stylesheet()
+        )
+
+    def _toggle_theme(self) -> None:
+        self.theme_manager.toggle()
+
+
+    def _apply_theme(self, dark: bool) -> None:
+        self.setStyleSheet(
+            self.theme_manager.stylesheet()
+        )
