@@ -1,4 +1,5 @@
 from app.collectors.adzuna_collector import AdzunaCollector
+from app.config.search import SearchConfig
 from app.config.settings import settings
 from app.database import SessionLocal
 from app.repositories.job_offer_repository import JobOfferRepository
@@ -7,13 +8,24 @@ from app.services.job_offer_service import JobOfferService
 
 
 def main():
+    search_config = SearchConfig(
+        keywords=[
+            "fullstack developer",
+            "java developer",
+            "angular developer",
+        ],
+        locations=[
+            "Rennes",
+            "Brest",
+            "Nantes",
+        ],
+        results_per_page=20,
+    )
+
     collector = AdzunaCollector(
         app_id=settings.adzuna_app_id,
         app_key=settings.adzuna_app_key,
-        country="fr",
-        what="fullstack developer",
-        where="Rennes",
-        results_per_page=10,
+        search_config=search_config,
     )
 
     with SessionLocal() as session:

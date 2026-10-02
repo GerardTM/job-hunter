@@ -3,6 +3,7 @@ from datetime import datetime
 import httpx
 
 from app.collectors.base import JobOfferCollector
+from app.config.search import SearchConfig
 from app.models.job_offer import JobOffer
 
 
@@ -14,20 +15,16 @@ class AdzunaCollector(JobOfferCollector):
         self,
         app_id: str,
         app_key: str,
+        search_config: SearchConfig,
         country: str = "fr",
         page: int = 1,
-        results_per_page: int = 20,
-        what: str | None = None,
-        where: str | None = None,
         client: httpx.Client | None = None,
     ):
         self.app_id = app_id
         self.app_key = app_key
+        self.search_config = search_config
         self.country = country
         self.page = page
-        self.results_per_page = results_per_page
-        self.what = what
-        self.where = where
         self.client = client or httpx.Client(timeout=10)
 
     def collect(self) -> list[JobOffer]:
@@ -40,15 +37,15 @@ class AdzunaCollector(JobOfferCollector):
         params = {
             "app_id": self.app_id,
             "app_key": self.app_key,
-            "results_per_page": self.results_per_page,
+            "results_per_page": self.search_config.results_per_page,
             "content-type": "application/json",
         }
 
-        if self.what:
-            params["what"] = self.what
+        if self.search_config.keywords:
+            params["what"] = " OR ".join(self.search_config.keywords)
 
-        if self.where:
-            params["where"] = self.where
+        if self.search_config.locations:
+            params["where"] = " OR ".join(self.search_config.locations)
 
         response = self.client.get(url, params=params)
         response.raise_for_status()

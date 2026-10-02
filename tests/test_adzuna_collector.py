@@ -1,6 +1,7 @@
 import httpx
 
 from app.collectors.adzuna_collector import AdzunaCollector
+from app.config.search import SearchConfig
 
 
 def create_http_client(response_data: dict) -> httpx.Client:
@@ -39,8 +40,10 @@ def test_collect_maps_adzuna_jobs():
     collector = AdzunaCollector(
         app_id="test-id",
         app_key="test-key",
-        what="fullstack developer",
-        where="Rennes",
+        search_config=SearchConfig(
+            keywords=["fullstack developer"],
+            locations=["Rennes"],
+        ),
         client=client,
     )
 
@@ -70,6 +73,7 @@ def test_collect_returns_empty_list_when_no_results():
     collector = AdzunaCollector(
         app_id="test-id",
         app_key="test-key",
+        search_config=SearchConfig(),
         client=client,
     )
 
@@ -96,6 +100,7 @@ def test_collect_supports_missing_optional_fields():
     collector = AdzunaCollector(
         app_id="test-id",
         app_key="test-key",
+        search_config=SearchConfig(),
         client=client,
     )
 
