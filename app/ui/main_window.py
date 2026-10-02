@@ -78,8 +78,19 @@ class MainWindow(QMainWindow):
             description="surveillance des offres",
         )
 
+        self.last_collection_card = StatCard(
+            title="Dernière collecte",
+            value="Jamais",
+            description="dernière vérification",
+        )
+
         stats_layout.addWidget(self.offer_count_card)
         stats_layout.addWidget(self.monitoring_status_card)
+        stats_layout.addWidget(self.last_collection_card)
+
+        stats_layout.setStretch(0, 1)
+        stats_layout.setStretch(1, 1)
+        stats_layout.setStretch(2, 1)
 
         layout.addLayout(stats_layout)
 
@@ -128,6 +139,14 @@ class MainWindow(QMainWindow):
             else "Arrêté"
         )
 
+        last_collection = self.application_service.last_collection_at
+
+        self.last_collection_card.set_value(
+            last_collection.astimezone().strftime("%H:%M:%S")
+            if last_collection
+            else "Jamais"
+        )
+
     def _refresh_offers(self) -> None:
         while self.offers_layout.count():
             item = self.offers_layout.takeAt(0)
@@ -172,6 +191,29 @@ class MainWindow(QMainWindow):
                 font-weight: 700;
                 color: #0f172a;
                 margin-top: 8px;
+            }
+
+            QFrame#statCard {
+                background-color: white;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+            }
+
+            QLabel#statCardTitle {
+                font-size: 13px;
+                font-weight: 600;
+                color: #475569;
+            }
+
+            QLabel#statCardValue {
+                font-size: 24px;
+                font-weight: 700;
+                color: #0f172a;
+            }
+
+            QLabel#statCardDescription {
+                font-size: 12px;
+                color: #64748b;
             }
 
             QScrollArea#offersScrollArea {

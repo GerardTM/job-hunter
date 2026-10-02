@@ -1,4 +1,5 @@
 import asyncio
+from datetime import UTC, datetime
 
 from PySide6.QtCore import QObject, Signal
 
@@ -27,9 +28,15 @@ class ApplicationService(QObject):
 
         self._scheduler_task: asyncio.Task[None] | None = None
 
+        self._last_collection_at: datetime | None = None
+
     @property
     def is_running(self) -> bool:
         return self.scheduler.is_running
+
+    @property
+    def last_collection_at(self) -> datetime | None:
+        return self._last_collection_at
 
     @property
     def job_hunter_service(self) -> JobHunterService:
@@ -37,6 +44,9 @@ class ApplicationService(QObject):
 
     async def _run_collection(self) -> None:
         await self.collection_runner.run()
+
+        self._last_collection_at = datetime.now(UTC)
+
         self.collection_completed.emit()
 
     def start(self) -> None:
