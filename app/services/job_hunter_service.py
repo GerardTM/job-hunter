@@ -41,3 +41,18 @@ class JobHunterService:
                 )
 
             return new_offers
+
+    def get_offer_count(self) -> int:
+        with SessionLocal() as session:
+            repository = JobOfferRepository(session)
+            job_offer_service = JobOfferService(repository)
+
+            return job_offer_service.count()
+
+
+    def get_latest_offers(self, limit: int = 10) -> list[JobOffer]:
+        with SessionLocal() as session:
+            repository = JobOfferRepository(session)
+            job_offer_service = JobOfferService(repository)
+
+            return job_offer_service.find_latest(limit)
