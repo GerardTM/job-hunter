@@ -18,3 +18,9 @@ class JobOfferService:
 
     def find_by_url(self, url: str) -> JobOffer | None:
         return self.repository.find_by_url(url)
+
+    def count(self) -> int:
+        return len(self.repository.find_all())
+
+    def find_latest(self, limit: int = 10) -> list[JobOffer]:
+        return self.repository.find_all()[:limit]
