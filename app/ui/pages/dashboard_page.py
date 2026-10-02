@@ -11,7 +11,7 @@ from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
 from app.ui.components.job_offer_card import JobOfferCard
 from app.ui.components.stat_card import StatCard
-from app.ui.styles.colors import Colors
+from app.ui.styles.colors import get_colors
 
 
 class DashboardPage(QWidget):
@@ -190,37 +190,38 @@ class DashboardPage(QWidget):
         self.offers_layout.addStretch()
 
     def _apply_styles(self) -> None:
+        colors = get_colors()
         self.setStyleSheet(
             f"""
             QWidget {{
-                background-color: {Colors.BACKGROUND};
-                color: {Colors.TEXT_PRIMARY};
+                background-color: {colors.BACKGROUND};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#pageTitle {{
                 background-color: transparent;
                 font-size: 28px;
                 font-weight: 700;
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#pageSubtitle {{
                 background-color: transparent;
                 font-size: 14px;
-                color: {Colors.TEXT_MUTED};
+                color: {colors.TEXT_MUTED};
             }}
 
             QLabel#sectionTitle {{
                 background-color: transparent;
                 font-size: 18px;
                 font-weight: 700;
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
                 margin-top: 8px;
             }}
 
             QFrame#statCard {{
-                background-color: {Colors.SURFACE};
-                border: 1px solid {Colors.BORDER};
+                background-color: {colors.SURFACE};
+                border: 1px solid {colors.BORDER};
                 border-radius: 8px;
             }}
 
@@ -228,20 +229,20 @@ class DashboardPage(QWidget):
                 background-color: transparent;
                 font-size: 13px;
                 font-weight: 600;
-                color: {Colors.TEXT_SECONDARY};
+                color: {colors.TEXT_SECONDARY};
             }}
 
             QLabel#statCardValue {{
                 background-color: transparent;
                 font-size: 24px;
                 font-weight: 700;
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#statCardDescription {{
                 background-color: transparent;
                 font-size: 12px;
-                color: {Colors.TEXT_MUTED};
+                color: {colors.TEXT_MUTED};
             }}
 
             QScrollArea#offersScrollArea {{
@@ -258,8 +259,8 @@ class DashboardPage(QWidget):
             }}
 
             QFrame#jobOfferCard {{
-                background-color: {Colors.SURFACE};
-                border: 1px solid {Colors.BORDER};
+                background-color: {colors.SURFACE};
+                border: 1px solid {colors.BORDER};
                 border-radius: 12px;
             }}
 
@@ -267,24 +268,24 @@ class DashboardPage(QWidget):
                 background-color: transparent;
                 font-size: 15px;
                 font-weight: 700;
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#jobOfferCompany {{
                 background-color: transparent;
                 font-size: 13px;
-                color: {Colors.TEXT_SECONDARY};
+                color: {colors.TEXT_SECONDARY};
             }}
 
             QLabel#jobOfferLocation {{
                 background-color: transparent;
                 font-size: 12px;
-                color: {Colors.TEXT_SUBTLE};
+                color: {colors.TEXT_SUBTLE};
             }}
 
             QPushButton#jobOfferButton {{
-                background-color: {Colors.BRAND_600};
-                color: {Colors.SURFACE};
+                background-color: {colors.BRAND_600};
+                color: {colors.SURFACE};
                 border: none;
                 border-radius: 8px;
                 padding: 8px 14px;
@@ -293,18 +294,18 @@ class DashboardPage(QWidget):
             }}
 
             QPushButton#jobOfferButton:hover {{
-                background-color: {Colors.BRAND_700};
+                background-color: {colors.BRAND_700};
             }}
 
             QPushButton#jobOfferButton:pressed {{
-                background-color: {Colors.BRAND_700};
+                background-color: {colors.BRAND_700};
             }}
 
             QLabel#emptyLabel {{
                 background-color: transparent;
                 padding: 24px;
                 font-size: 14px;
-                color: {Colors.TEXT_SUBTLE};
+                color: {colors.TEXT_SUBTLE};
             }}
             """
         )

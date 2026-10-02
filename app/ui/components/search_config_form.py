@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.config.search import SearchConfig
-from app.ui.styles.colors import Colors
+from app.ui.styles.colors import get_colors
 
 
 class SearchConfigForm(QWidget):
@@ -113,38 +113,39 @@ class SearchConfigForm(QWidget):
         ]
 
     def _apply_styles(self) -> None:
+        colors = get_colors()
         self.setStyleSheet(
             f"""
             QLabel#formTitle {{
                 background-color: transparent;
                 font-size: 22px;
                 font-weight: 700;
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#formSubtitle {{
                 background-color: transparent;
                 font-size: 14px;
-                color: {Colors.TEXT_MUTED};
+                color: {colors.TEXT_MUTED};
             }}
 
             QLineEdit,
             QSpinBox {{
-                background-color: {Colors.SURFACE};
-                color: {Colors.TEXT_PRIMARY};
+                background-color: {colors.SURFACE};
+                color: {colors.TEXT_PRIMARY};
                 padding: 8px 10px;
-                border: 1px solid {Colors.BORDER_STRONG};
+                border: 1px solid {colors.BORDER_STRONG};
                 border-radius: 8px;
             }}
 
             QLineEdit:focus,
             QSpinBox:focus {{
-                border: 1px solid {Colors.BRAND_600};
+                border: 1px solid {colors.BRAND_600};
             }}
 
             QPushButton#saveButton {{
-                background-color: {Colors.BRAND_600};
-                color: {Colors.SURFACE};
+                background-color: {colors.BRAND_600};
+                color: {colors.SURFACE};
                 border: none;
                 border-radius: 8px;
                 padding: 9px 18px;
@@ -153,11 +154,11 @@ class SearchConfigForm(QWidget):
             }}
 
             QPushButton#saveButton:hover {{
-                background-color: {Colors.BRAND_700};
+                background-color: {colors.BRAND_700};
             }}
 
             QPushButton#saveButton:pressed {{
-                background-color: {Colors.BRAND_700};
+                background-color: {colors.BRAND_700};
             }}
             """
         )

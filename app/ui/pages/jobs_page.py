@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 from app.services.application_service import ApplicationService
 from app.services.job_hunter_service import JobHunterService
 from app.ui.components.job_offer_card import JobOfferCard
-from app.ui.styles.colors import Colors
+from app.ui.styles.colors import get_colors
 
 
 class JobsPage(QWidget):
@@ -93,24 +93,25 @@ class JobsPage(QWidget):
         self.jobs_layout.addStretch()
 
     def _apply_styles(self) -> None:
+        colors = get_colors()
         self.setStyleSheet(
             f"""
             QWidget {{
-                background-color: {Colors.BACKGROUND};
-                color: {Colors.TEXT_PRIMARY};
+                background-color: {colors.BACKGROUND};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#pageTitle {{
                 background-color: transparent;
                 font-size: 28px;
                 font-weight: 700;
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#pageSubtitle {{
                 background-color: transparent;
                 font-size: 14px;
-                color: {Colors.TEXT_MUTED};
+                color: {colors.TEXT_MUTED};
             }}
 
             QScrollArea#jobsScrollArea {{
@@ -130,7 +131,7 @@ class JobsPage(QWidget):
                 background-color: transparent;
                 padding: 24px;
                 font-size: 14px;
-                color: {Colors.TEXT_SUBTLE};
+                color: {colors.TEXT_SUBTLE};
             }}
             """
         )

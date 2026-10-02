@@ -1,41 +1,42 @@
-from app.ui.styles.colors import Colors
+from app.ui.styles.colors import get_colors
 
 
 def get_light_theme() -> str:
+    colors = get_colors()
     return f"""
         QMainWindow {{
-            background-color: {Colors.BACKGROUND};
+            background-color: {colors.BACKGROUND};
         }}
 
         QWidget#centralWidget {{
-            background-color: {Colors.BACKGROUND};
-            color: {Colors.TEXT_PRIMARY};
+            background-color: {colors.BACKGROUND};
+            color: {colors.TEXT_PRIMARY};
         }}
 
         QStackedWidget#pages {{
-            background-color: {Colors.BACKGROUND};
+            background-color: {colors.BACKGROUND};
         }}
 
         QLabel {{
-            color: {Colors.TEXT_PRIMARY};
+            color: {colors.TEXT_PRIMARY};
         }}
 
         QLineEdit,
         QSpinBox {{
-            background-color: {Colors.SURFACE};
-            color: {Colors.TEXT_PRIMARY};
-            border: 1px solid {Colors.BORDER_STRONG};
+            background-color: {colors.SURFACE};
+            color: {colors.TEXT_PRIMARY};
+            border: 1px solid {colors.BORDER_STRONG};
             border-radius: 8px;
             padding: 8px 10px;
         }}
 
         QLineEdit:focus,
         QSpinBox:focus {{
-            border: 1px solid {Colors.BRAND_600};
+            border: 1px solid {colors.BRAND_600};
         }}
 
         QPushButton {{
-            color: {Colors.TEXT_PRIMARY};
+            color: {colors.TEXT_PRIMARY};
         }}
 
         QScrollArea {{
@@ -50,13 +51,13 @@ def get_light_theme() -> str:
         }}
 
         QScrollBar::handle:vertical {{
-            background-color: {Colors.BORDER_STRONG};
+            background-color: {colors.BORDER_STRONG};
             border-radius: 4px;
             min-height: 30px;
         }}
 
         QScrollBar::handle:vertical:hover {{
-            background-color: {Colors.TEXT_SUBTLE};
+            background-color: {colors.TEXT_SUBTLE};
         }}
 
         QScrollBar::add-line:vertical,

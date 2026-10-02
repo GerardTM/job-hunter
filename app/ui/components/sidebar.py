@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from app.ui.styles.colors import Colors
+from app.ui.styles.colors import get_colors
 
 
 class Sidebar(QWidget):
@@ -86,29 +86,30 @@ class Sidebar(QWidget):
         return button
 
     def _apply_styles(self) -> None:
+        colors = get_colors()
         self.setStyleSheet(
             f"""
             QWidget#sidebar {{
-                background-color: {Colors.SURFACE};
-                border-right: 1px solid {Colors.BORDER};
+                background-color: {colors.SURFACE};
+                border-right: 1px solid {colors.BORDER};
             }}
 
             QLabel#sidebarLogo {{
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
                 font-size: 21px;
                 font-weight: 800;
                 padding-left: 8px;
             }}
 
             QLabel#sidebarSubtitle {{
-                color: {Colors.TEXT_SUBTLE};
+                color: {colors.TEXT_SUBTLE};
                 font-size: 12px;
                 padding-left: 8px;
             }}
 
             QPushButton#sidebarButton {{
                 background-color: transparent;
-                color: {Colors.TEXT_MUTED};
+                color: {colors.TEXT_MUTED};
                 border: none;
                 border-radius: 10px;
                 padding: 12px 14px;
@@ -118,17 +119,17 @@ class Sidebar(QWidget):
             }}
 
             QPushButton#sidebarButton:hover {{
-                background-color: {Colors.BRAND_SURFACE_HOVER};
-                color: {Colors.BRAND_600};
+                background-color: {colors.BRAND_SURFACE_HOVER};
+                color: {colors.BRAND_600};
             }}
 
             QPushButton#sidebarButton:checked {{
-                background-color: {Colors.BRAND_SURFACE};
-                color: {Colors.BRAND_600};
+                background-color: {colors.BRAND_SURFACE};
+                color: {colors.BRAND_600};
             }}
 
             QLabel#sidebarVersion {{
-                color: {Colors.TEXT_SUBTLE};
+                color: {colors.TEXT_SUBTLE};
                 font-size: 11px;
                 padding-left: 8px;
             }}

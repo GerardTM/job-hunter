@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.models.job_offer import JobOffer
-from app.ui.styles.colors import Colors
+from app.ui.styles.colors import get_colors
 
 
 class JobOfferCard(QFrame):
@@ -63,11 +63,12 @@ class JobOfferCard(QFrame):
         QDesktopServices.openUrl(QUrl(self.offer.url))
 
     def _apply_styles(self) -> None:
+        colors = get_colors()
         self.setStyleSheet(
             f"""
             QFrame#jobOfferCard {{
-                background-color: {Colors.SURFACE};
-                border: 1px solid {Colors.BORDER};
+                background-color: {colors.SURFACE};
+                border: 1px solid {colors.BORDER};
                 border-radius: 12px;
             }}
 
@@ -75,24 +76,24 @@ class JobOfferCard(QFrame):
                 background-color: transparent;
                 font-size: 15px;
                 font-weight: 700;
-                color: {Colors.TEXT_PRIMARY};
+                color: {colors.TEXT_PRIMARY};
             }}
 
             QLabel#jobOfferCompany {{
                 background-color: transparent;
                 font-size: 13px;
-                color: {Colors.TEXT_SECONDARY};
+                color: {colors.TEXT_SECONDARY};
             }}
 
             QLabel#jobOfferLocation {{
                 background-color: transparent;
                 font-size: 12px;
-                color: {Colors.TEXT_SUBTLE};
+                color: {colors.TEXT_SUBTLE};
             }}
 
             QPushButton#jobOfferButton {{
-                background-color: {Colors.BRAND_600};
-                color: {Colors.SURFACE};
+                background-color: {colors.BRAND_600};
+                color: {colors.SURFACE};
                 border: none;
                 border-radius: 8px;
                 padding: 8px 14px;
@@ -101,11 +102,11 @@ class JobOfferCard(QFrame):
             }}
 
             QPushButton#jobOfferButton:hover {{
-                background-color: {Colors.BRAND_700};
+                background-color: {colors.BRAND_700};
             }}
 
             QPushButton#jobOfferButton:pressed {{
-                background-color: {Colors.BRAND_700};
+                background-color: {colors.BRAND_700};
             }}
             """
         )
