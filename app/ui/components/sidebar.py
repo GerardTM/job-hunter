@@ -71,8 +71,13 @@ class Sidebar(QWidget):
         layout.addWidget(self.jobs_button)
         layout.addWidget(self.search_button)
 
+        self.dashboard_button.setToolTip("Dashboard")
+        self.jobs_button.setToolTip("Offres d'emploi")
+        self.search_button.setToolTip("Recherche")
+
         self.theme_button = QPushButton("☾  Mode sombre")
         self.theme_button.setObjectName("themeButton")
+        self.theme_button.setToolTip("Passer au thème sombre")
         self.theme_button.setCheckable(False)
         self.theme_button.setCursor(
             Qt.CursorShape.PointingHandCursor
@@ -110,11 +115,21 @@ class Sidebar(QWidget):
 
     def set_dark_mode(self, dark: bool) -> None:
         if self._compact:
-            self.theme_button.setText("☀" if dark else "☾")
+            self.theme_button.setText(
+                "☀" if dark else "☾"
+            )
         else:
             self.theme_button.setText(
-                "☀  Mode clair" if dark else "☾  Mode sombre"
+                "☀  Mode clair"
+                if dark
+                else "☾  Mode sombre"
             )
+
+        self.theme_button.setToolTip(
+            "Passer au thème clair"
+            if dark
+            else "Passer au thème sombre"
+        )
 
         self._apply_styles()
 
@@ -224,6 +239,14 @@ class Sidebar(QWidget):
             QPushButton#sidebarButton,
             QPushButton#themeButton {{
                 min-height: 42px;
+            }}
+
+            QToolTip {{
+                background-color: {colors.SURFACE};
+                color: {colors.TEXT_PRIMARY};
+                border: 1px solid {colors.BORDER};
+                padding: 6px 8px;
+                font-size: 12px;
             }}
             """
         )
