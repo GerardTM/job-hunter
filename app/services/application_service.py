@@ -11,6 +11,7 @@ from app.services.scheduler_service import SchedulerService
 class ApplicationService(QObject):
 
     collection_completed = Signal()
+    collection_failed = Signal(str)
 
     def __init__(
         self,
@@ -43,10 +44,15 @@ class ApplicationService(QObject):
         return self.collection_runner.job_hunter_service
 
     async def _run_collection(self) -> None:
-        await self.collection_runner.run()
+        try:
+            await self.collection_runner.run()
+        except Exception as error:
+            self.collection_failed.emit(
+                str(error)
+            )
+            raise
 
         self._last_collection_at = datetime.now(UTC)
-
         self.collection_completed.emit()
 
     def start(self) -> None:

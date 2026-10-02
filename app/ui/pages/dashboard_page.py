@@ -37,6 +37,10 @@ class DashboardPage(QWidget):
             self._refresh_dashboard
         )
 
+        self.application_service.collection_failed.connect(
+            self._show_collection_error
+        )
+
     def _setup_ui(self) -> None:
         layout = QVBoxLayout(self)
 
@@ -75,6 +79,12 @@ class DashboardPage(QWidget):
         header_layout.addWidget(self.refresh_button)
 
         layout.addLayout(header_layout)
+
+        self.status_label = QLabel()
+        self.status_label.setObjectName("collectionStatus")
+        self.status_label.hide()
+
+        layout.addWidget(self.status_label)
 
         self.stats_layout = QGridLayout()
         self.stats_layout.setSpacing(16)
@@ -199,9 +209,55 @@ class DashboardPage(QWidget):
                 1 if column < columns else 0,
             )
 
+    def _show_collection_success(self) -> None:
+        last_collection = (
+            self.application_service.last_collection_at
+        )
+
+        if last_collection:
+            time = last_collection.astimezone().strftime(
+                "%H:%M:%S"
+            )
+
+            self.status_label.setText(
+                f"✓ Dernière collecte réussie à {time}"
+            )
+
+        self.status_label.setObjectName(
+            "collectionStatusSuccess"
+        )
+        self.status_label.style().unpolish(
+            self.status_label
+        )
+        self.status_label.style().polish(
+            self.status_label
+        )
+        self.status_label.show()
+
+
+    def _show_collection_error(
+        self,
+        error: str,
+    ) -> None:
+        self.status_label.setText(
+            f"⚠ Échec de la collecte : {error}"
+        )
+
+        self.status_label.setObjectName(
+            "collectionStatusError"
+        )
+        self.status_label.style().unpolish(
+            self.status_label
+        )
+        self.status_label.style().polish(
+            self.status_label
+        )
+        self.status_label.show()
+
     def _refresh_dashboard(self) -> None:
         self._refresh_stats()
         self._refresh_offers()
+        self._show_collection_success()
 
     def _refresh_stats(self) -> None:
         self.offer_count_card.set_value(
@@ -426,6 +482,26 @@ class DashboardPage(QWidget):
             QPushButton#refreshButton:disabled {{
                 background-color: {colors.BORDER};
                 color: {colors.TEXT_MUTED};
+            }}
+
+            QLabel#collectionStatus {{
+                background-color: transparent;
+                font-size: 13px;
+                padding: 8px 0;
+            }}
+
+            QLabel#collectionStatusSuccess {{
+                background-color: transparent;
+                color: #16a34a;
+                font-size: 13px;
+                padding: 8px 0;
+            }}
+
+            QLabel#collectionStatusError {{
+                background-color: transparent;
+                color: #dc2626;
+                font-size: 13px;
+                padding: 8px 0;
             }}
             """
         )
