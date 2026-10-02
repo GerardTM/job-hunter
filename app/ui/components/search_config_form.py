@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.config.search import SearchConfig
+from app.ui.styles.colors import Colors
 
 
 class SearchConfigForm(QWidget):
@@ -113,48 +114,50 @@ class SearchConfigForm(QWidget):
 
     def _apply_styles(self) -> None:
         self.setStyleSheet(
-            """
-            QLabel#formTitle {
+            f"""
+            QLabel#formTitle {{
+                background-color: transparent;
                 font-size: 22px;
                 font-weight: 700;
-                color: #0f172a;
-            }
+                color: {Colors.TEXT_PRIMARY};
+            }}
 
-            QLabel#formSubtitle {
+            QLabel#formSubtitle {{
+                background-color: transparent;
                 font-size: 14px;
-                color: #64748b;
-            }
+                color: {Colors.TEXT_MUTED};
+            }}
 
             QLineEdit,
-            QSpinBox {
+            QSpinBox {{
+                background-color: {Colors.SURFACE};
+                color: {Colors.TEXT_PRIMARY};
                 padding: 8px 10px;
-                border: 1px solid #cbd5e1;
+                border: 1px solid {Colors.BORDER_STRONG};
                 border-radius: 8px;
-                background-color: white;
-                color: #0f172a;
-            }
+            }}
 
             QLineEdit:focus,
-            QSpinBox:focus {
-                border: 1px solid #e11d48;
-            }
+            QSpinBox:focus {{
+                border: 1px solid {Colors.BRAND_600};
+            }}
 
-            QPushButton#saveButton {
-                background-color: #e11d48;
-                color: white;
+            QPushButton#saveButton {{
+                background-color: {Colors.BRAND_600};
+                color: {Colors.SURFACE};
                 border: none;
                 border-radius: 8px;
                 padding: 9px 18px;
                 font-size: 13px;
                 font-weight: 600;
-            }
+            }}
 
-            QPushButton#saveButton:hover {
-                background-color: #be123c;
-            }
+            QPushButton#saveButton:hover {{
+                background-color: {Colors.BRAND_700};
+            }}
 
-            QPushButton#saveButton:pressed {
-                background-color: #9f1239;
-            }
+            QPushButton#saveButton:pressed {{
+                background-color: {Colors.BRAND_700};
+            }}
             """
         )
