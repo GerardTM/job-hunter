@@ -20,12 +20,15 @@ class StatCard(QFrame):
         title_label = QLabel(title)
         title_label.setObjectName("statCardTitle")
 
-        value_label = QLabel(value)
-        value_label.setObjectName("statCardValue")
+        self.value_label = QLabel(value)
+        self.value_label.setObjectName("statCardValue")
 
         description_label = QLabel(description)
         description_label.setObjectName("statCardDescription")
 
         layout.addWidget(title_label)
-        layout.addWidget(value_label)
+        layout.addWidget(self.value_label)
         layout.addWidget(description_label)
+
+    def set_value(self, value: str) -> None:
+        self.value_label.setText(value)

@@ -32,6 +32,10 @@ class MainWindow(QMainWindow):
         self._setup_ui()
         self._apply_styles()
 
+        self.application_service.collection_completed.connect(
+            self._refresh_dashboard
+        )
+
     def _setup_ui(self) -> None:
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
@@ -58,13 +62,13 @@ class MainWindow(QMainWindow):
         stats_layout = QHBoxLayout()
         stats_layout.setSpacing(16)
 
-        offer_count = StatCard(
+        self.offer_count_card = StatCard(
             title="Offres trouvées",
             value=str(self.job_hunter_service.get_offer_count()),
             description="offres enregistrées",
         )
 
-        monitoring_status = StatCard(
+        self.monitoring_status_card = StatCard(
             title="Monitoring",
             value=(
                 "Actif"
@@ -74,8 +78,8 @@ class MainWindow(QMainWindow):
             description="surveillance des offres",
         )
 
-        stats_layout.addWidget(offer_count)
-        stats_layout.addWidget(monitoring_status)
+        stats_layout.addWidget(self.offer_count_card)
+        stats_layout.addWidget(self.monitoring_status_card)
 
         layout.addLayout(stats_layout)
 
@@ -84,8 +88,6 @@ class MainWindow(QMainWindow):
 
         layout.addWidget(latest_offers_title)
 
-        latest_offers = self.job_hunter_service.get_latest_offers()
-
         scroll_area = QScrollArea()
         scroll_area.setObjectName("offersScrollArea")
         scroll_area.setWidgetResizable(True)
@@ -93,31 +95,59 @@ class MainWindow(QMainWindow):
             Qt.ScrollBarPolicy.ScrollBarAlwaysOff
         )
 
-        offers_container = QWidget()
-        offers_container.setObjectName("offersContainer")
+        self.offers_container = QWidget()
+        self.offers_container.setObjectName("offersContainer")
 
-        offers_layout = QVBoxLayout(offers_container)
-        offers_layout.setContentsMargins(0, 0, 8, 0)
-        offers_layout.setSpacing(8)
+        self.offers_layout = QVBoxLayout(
+            self.offers_container
+        )
+        self.offers_layout.setContentsMargins(0, 0, 8, 0)
+        self.offers_layout.setSpacing(8)
 
-        if not latest_offers:
-            empty_label = QLabel("Aucune offre trouvée.")
-            empty_label.setObjectName("emptyLabel")
+        self._refresh_offers()
 
-            offers_layout.addWidget(empty_label)
-        else:
-            for offer in latest_offers:
-                offer_card = JobOfferCard(offer)
-                offers_layout.addWidget(offer_card)
-
-        offers_layout.addStretch()
-
-        scroll_area.setWidget(offers_container)
+        scroll_area.setWidget(self.offers_container)
 
         layout.addWidget(scroll_area)
         layout.addStretch()
 
         self.setCentralWidget(central_widget)
+
+    def _refresh_dashboard(self) -> None:
+        self._refresh_stats()
+        self._refresh_offers()
+
+    def _refresh_stats(self) -> None:
+        self.offer_count_card.set_value(
+            str(self.job_hunter_service.get_offer_count())
+        )
+
+        self.monitoring_status_card.set_value(
+            "Actif"
+            if self.application_service.is_running
+            else "Arrêté"
+        )
+
+    def _refresh_offers(self) -> None:
+        while self.offers_layout.count():
+            item = self.offers_layout.takeAt(0)
+
+            if item.widget() is not None:
+                item.widget().deleteLater()
+
+        latest_offers = self.job_hunter_service.get_latest_offers()
+
+        if not latest_offers:
+            empty_label = QLabel("Aucune offre trouvée.")
+            empty_label.setObjectName("emptyLabel")
+
+            self.offers_layout.addWidget(empty_label)
+        else:
+            for offer in latest_offers:
+                offer_card = JobOfferCard(offer)
+                self.offers_layout.addWidget(offer_card)
+
+        self.offers_layout.addStretch()
 
     def _apply_styles(self) -> None:
         self.setStyleSheet(
